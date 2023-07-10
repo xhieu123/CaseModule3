@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.22",
+    "qs": "^6.11.2"
+  },
+  "type": "module"
+}
