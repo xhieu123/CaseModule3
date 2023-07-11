@@ -100,9 +100,9 @@ class ProductController {
                             </div>
                             <input name="productId" type="hidden" value="${product.id}"/>
                             <div class="delete-edit">
-                                <a href="/edit-product?idEdit=${product.id}"><button>Edit</button></a>
-                                <a href="/delete-product?idDelete=${product.id}"><button>Delete</button></a>                            
-                            </div>
+                            <a href="/edit-product?idEdit=${product.id}"><button class="btn btn-outline-dark">Edit</button></a>
+                            <a href="/delete-product?idDelete=${product.id}"><button class="btn btn-outline-dark">delete</button></a>                            
+                        </div>
                         </div>
                     </div> 
             </div>`
@@ -115,25 +115,6 @@ class ProductController {
             }
         })
     }
-
-    // searchProduct(req,res){
-    //     let urlObject = url.parse(req.url, true)
-    //     productService.findById(urlObject.query.idDelete).then((products) => {
-    //        if (products){
-    //            res.writeHead(301,{'location': '/products'})
-    //            res.end();
-    //        }else {
-    //            // Sản phẩm không tồn tại
-    //            res.writeHead(404, {'Content-Type': 'text/plain'});
-    //            res.write('Sản phẩm không tồn tại');
-    //            res.end();
-    //        }
-    //     }).catch((error) => {
-    //         res.writeHead(500, {'Content-Type': 'text/plain'});
-    //         res.write('Lỗi trong quá trình tìm kiếm sản phẩm');
-    //         res.end();
-    //     })
-    // }
 
 }
 
@@ -160,8 +141,8 @@ function showList(req, res) {
                             </div>
                             <input name="productId" type="hidden" value="${product.id}"/>
                             <div class="delete-edit">
-                                <a href="/edit-product?idEdit=${product.id}"><button>Edit</button></a>
-                                <a href="/delete-product?idDelete=${product.id}"><button>Delete</button></a>                            
+                                <a href="/edit-product?idEdit=${product.id}"><button class="btn btn-outline-dark">Edit</button></a>
+                                <a href="/delete-product?idDelete=${product.id}"><button class="btn btn-outline-dark">delete</button></a>                                                        
                             </div>
                         </div>
                     </div> 
