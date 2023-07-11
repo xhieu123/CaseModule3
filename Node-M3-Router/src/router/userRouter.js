@@ -8,6 +8,7 @@ let userRouter = {
     '/delete-cart': userController.deleteCart,
     '/sign-in': userController.signIn,
     '/sign-up': userController.signUp,
+    '/search-user' : userController.searchProduct,
 }
 
 export default userRouter;

@@ -7,6 +7,7 @@ let productRouter = {
     '/add-product': productController.showFormAdd,
     '/edit-product': productController.showFormEdit,
     '/delete-product': productController.delete,
+    '/search-product': productController.searchProduct,
 }
 
 export default productRouter;

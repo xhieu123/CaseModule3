@@ -2,6 +2,7 @@ import fs from "fs";
 import qs from "qs";
 import url from "url"
 import userService from "../service/userService.js";
+import productService from "../service/productService.js";
 
 
 class UserController {
@@ -128,16 +129,17 @@ class UserController {
             } else {
                 data = qs.parse(data)
                 userService.signIn(data).then((result) => {
+                    console.log(result)
                     if (result.length !== 0) {
                         if (result[0].userName === 'admin') {
-                            fs.readFile('./view/product/list.html', 'utf-8', (err, stringHTML) => {
-                                res.write(stringHTML);
-                                res.end();
-                            })
-                            // res.writeHead(301, {Location: '/'})
-                            // res.end();
+                            res.writeHead(301, {Location: '/products'})
+                            res.end();
                         } else {
                             showList(req, res)
+                            // fs.readFile('./view/user/signIn.html','utf-8',(err,stringHTML)=>{
+                            //     stringHTML = stringHTML.replace('{12111999}',result[0].name)
+
+                            // })
                             // fs.readFile('./view/user/list.html', 'utf-8', (err, stringHTML) => {
                             //     res.write(stringHTML);
                             //     res.end();
@@ -154,6 +156,54 @@ class UserController {
             }
         })
     }
+    searchProduct(req, res) {
+        let data = "";
+        req.on("data", dataRaw => {
+            data += dataRaw;
+        })
+        req.on('end', () => {
+            if (req.method === 'GET') {
+                showList(req, res);
+            } else {
+                data = qs.parse(data);
+                fs.readFile('view/user/list.html', 'utf-8', (err, stringHTML) => {
+                    let str = '';
+                    productService.findByName(data.name).then((products) => {
+                        for (const product of products) {
+                            str += `<div class="col-lg-3 col-sm-6 my-3">
+                    <div class="col-12 bg-white text-center h-100 product-item">
+                        <div class="row h-100">
+                            <div class="col-12 p-0 mb-3">
+                                <a href="product.html">
+                                    <img src="${product.image}" class="img-fluid">
+                                </a>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <a href="product.html" class="product-name">${product.name}</a>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <span class="product-price">
+                                ${product.price}$
+                                </span>
+                            </div>
+                            <input name="productId" type="hidden" value="${product.id}"/>
+                            <div class="col-12 mb-3 align-self-end">
+                                        <button class="btn btn-outline-dark" type="submit" onclick="addToCart(${product.id})">
+                                        <i class="fas fa-cart-plus me-2"></i>Add to cart</button>
+                            </div>
+                        </div>
+                    </div> 
+            </div>`
+                        }
+                        stringHTML = stringHTML.replace('###list###', str)
+                        res.write(stringHTML);
+                        res.end();
+                    })
+                })
+            }
+        })
+    }
+
 }
 function showList(req, res) {
     fs.readFile('view/user/list.html', 'utf-8', (err, stringHTML) => {
@@ -187,7 +237,7 @@ function showList(req, res) {
                         </form>
                     </div>`
             }
-            stringHTML = stringHTML.replace('{###list###}', str)
+            stringHTML = stringHTML.replace('###list###', str)
             res.write(stringHTML);
             res.end();
         })

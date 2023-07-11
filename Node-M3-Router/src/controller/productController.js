@@ -10,15 +10,15 @@ class ProductController {
         req.on('data', dataRaw => {
             data += dataRaw;
         })
-        req.on('end',  () => {
+        req.on('end', () => {
             if (req.method === 'GET') {
                 showList(req, res);
             } else {
                 data = qs.parse(data);
-                productService.save(data).then(() =>{
-                  showList(req, res);  
+                productService.save(data).then(() => {
+                    showList(req, res);
                 })
-                
+
             }
         })
     }
@@ -31,7 +31,7 @@ class ProductController {
         req.on('end', () => {
             let urlObject = url.parse(req.url, true)
             // console.log(req.method);
-            if (req.method == 'GET') {
+            if (req.method === 'GET') {
                 fs.readFile('view/product/edit.html', 'utf-8', (err, stringHTML) => {
                     productService.findById(urlObject.query.idEdit).then((product) => {
                         stringHTML = stringHTML.replace('{id}', product.id);
@@ -62,20 +62,27 @@ class ProductController {
 
     delete(req, res) {
         let urlObject = url.parse(req.url, true)
-                productService.deleteId(urlObject.query.idDelete).then(() => {    
-                    res.writeHead(301, {'location': '/products'});
-                    res.end()
-                });
-}
+        productService.deleteId(urlObject.query.idDelete).then(() => {
+            res.writeHead(301, {'location': '/products'});
+            res.end();
+        });
+    }
 
-}
-
-function showList(req, res) {
-    fs.readFile('view/product/list.html', 'utf-8', (err, stringHTML) => {
-        let str = '';
-        productService.findAll().then((products)=> {
-            for (const product of products) {
-                str+=`<div class="col-lg-3 col-sm-6 my-3">
+    searchProduct(req, res) {
+        let data = "";
+        req.on("data", dataRaw => {
+            data += dataRaw;
+        })
+        req.on('end', () => {
+            if (req.method === 'GET') {
+                showList(req, res);
+            } else {
+                data = qs.parse(data);
+                fs.readFile('view/product/list.html', 'utf-8', (err, stringHTML) => {
+                    let str = '';
+                    productService.findByName(data.name).then((products) => {
+                        for (const product of products) {
+                            str += `<div class="col-lg-3 col-sm-6 my-3">
                     <div class="col-12 bg-white text-center h-100 product-item">
                         <div class="row h-100">
                             <div class="col-12 p-0 mb-3">
@@ -94,7 +101,67 @@ function showList(req, res) {
                             <input name="productId" type="hidden" value="${product.id}"/>
                             <div class="delete-edit">
                                 <a href="/edit-product?idEdit=${product.id}"><button>Edit</button></a>
-                                <a href="/delete-product?idDelete=${product.id}"><button>delete</button></a>                            
+                                <a href="/delete-product?idDelete=${product.id}"><button>Delete</button></a>                            
+                            </div>
+                        </div>
+                    </div> 
+            </div>`
+                        }
+                        stringHTML = stringHTML.replace('###list###', str)
+                        res.write(stringHTML);
+                        res.end();
+                    })
+                })
+            }
+        })
+    }
+
+    // searchProduct(req,res){
+    //     let urlObject = url.parse(req.url, true)
+    //     productService.findById(urlObject.query.idDelete).then((products) => {
+    //        if (products){
+    //            res.writeHead(301,{'location': '/products'})
+    //            res.end();
+    //        }else {
+    //            // Sản phẩm không tồn tại
+    //            res.writeHead(404, {'Content-Type': 'text/plain'});
+    //            res.write('Sản phẩm không tồn tại');
+    //            res.end();
+    //        }
+    //     }).catch((error) => {
+    //         res.writeHead(500, {'Content-Type': 'text/plain'});
+    //         res.write('Lỗi trong quá trình tìm kiếm sản phẩm');
+    //         res.end();
+    //     })
+    // }
+
+}
+
+function showList(req, res) {
+    fs.readFile('view/product/list.html', 'utf-8', (err, stringHTML) => {
+        let str = '';
+        productService.findAll().then((products) => {
+            for (const product of products) {
+                str += `<div class="col-lg-3 col-sm-6 my-3">
+                    <div class="col-12 bg-white text-center h-100 product-item">
+                        <div class="row h-100">
+                            <div class="col-12 p-0 mb-3">
+                                <a href="product.html">
+                                    <img src="${product.image}" class="img-fluid">
+                                </a>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <a href="product.html" class="product-name">${product.name}</a>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <span class="product-price">
+                                ${product.price}$
+                                </span>
+                            </div>
+                            <input name="productId" type="hidden" value="${product.id}"/>
+                            <div class="delete-edit">
+                                <a href="/edit-product?idEdit=${product.id}"><button>Edit</button></a>
+                                <a href="/delete-product?idDelete=${product.id}"><button>Delete</button></a>                            
                             </div>
                         </div>
                     </div> 
