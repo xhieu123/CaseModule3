@@ -54,7 +54,7 @@ class ProductController {
     }
 
     showFormAdd(req, res) {
-        fs.readFile('view/product/add.html', 'utf-8', (err, stringHTML) => {
+        fs.readFile('view/product/add-product.html', 'utf-8', (err, stringHTML) => {
             res.write(stringHTML);
             res.end();
         })
@@ -87,7 +87,7 @@ class ProductController {
                         <div class="row h-100">
                             <div class="col-12 p-0 mb-3">
                                 <a href="product.html">
-                                    <img src="${product.image}" class="img-fluid">
+                                    <img src="${product.image}" class="img-fluid" style="height: 300px">
                                 </a>
                             </div>
                             <div class="col-12 mb-3">
@@ -95,14 +95,14 @@ class ProductController {
                             </div>
                             <div class="col-12 mb-3">
                                 <span class="product-price">
-                                ${product.price}$
+                                ${product.price},000,000 VNĐ
                                 </span>
                             </div>
                             <input name="productId" type="hidden" value="${product.id}"/>
                             <div class="delete-edit">
-                                <a href="/edit-product?idEdit=${product.id}"><button>Edit</button></a>
-                                <a href="/delete-product?idDelete=${product.id}"><button>Delete</button></a>                            
-                            </div>
+                                <a href="/edit-product?idEdit=${product.id}"><button class="btn btn-outline-dark">Edit</button></a>
+                            <a href="/delete-product?idDelete=${product.id}"><button class="btn btn-outline-dark">delete</button></a>                            
+                        </div>
                         </div>
                     </div> 
             </div>`
@@ -116,25 +116,6 @@ class ProductController {
         })
     }
 
-    // searchProduct(req,res){
-    //     let urlObject = url.parse(req.url, true)
-    //     productService.findById(urlObject.query.idDelete).then((products) => {
-    //        if (products){
-    //            res.writeHead(301,{'location': '/products'})
-    //            res.end();
-    //        }else {
-    //            // Sản phẩm không tồn tại
-    //            res.writeHead(404, {'Content-Type': 'text/plain'});
-    //            res.write('Sản phẩm không tồn tại');
-    //            res.end();
-    //        }
-    //     }).catch((error) => {
-    //         res.writeHead(500, {'Content-Type': 'text/plain'});
-    //         res.write('Lỗi trong quá trình tìm kiếm sản phẩm');
-    //         res.end();
-    //     })
-    // }
-
 }
 
 function showList(req, res) {
@@ -147,7 +128,7 @@ function showList(req, res) {
                         <div class="row h-100">
                             <div class="col-12 p-0 mb-3">
                                 <a href="product.html">
-                                    <img src="${product.image}" class="img-fluid">
+                                    <img src="${product.image}" class="img-fluid" width="350px" height="600px">
                                 </a>
                             </div>
                             <div class="col-12 mb-3">
@@ -155,13 +136,13 @@ function showList(req, res) {
                             </div>
                             <div class="col-12 mb-3">
                                 <span class="product-price">
-                                ${product.price}$
+                                ${product.price},000,000 VNĐ
                                 </span>
                             </div>
                             <input name="productId" type="hidden" value="${product.id}"/>
                             <div class="delete-edit">
-                                <a href="/edit-product?idEdit=${product.id}"><button>Edit</button></a>
-                                <a href="/delete-product?idDelete=${product.id}"><button>Delete</button></a>                            
+                                <a href="/edit-product?idEdit=${product.id}"><button class="btn btn-outline-dark">Edit</button></a>
+                                <a href="/delete-product?idDelete=${product.id}"><button class="btn btn-outline-dark" onclick="return confirm('bạn có chắc muốn xóa sản phẩm ${product.name} không ?')">Delete</button></a>                            
                             </div>
                         </div>
                     </div> 

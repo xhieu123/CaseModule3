@@ -183,7 +183,7 @@ class UserController {
                             </div>
                             <div class="col-12 mb-3">
                                 <span class="product-price">
-                                ${product.price}$
+                                ${product.price},000,000 VNĐ
                                 </span>
                             </div>
                             <input name="productId" type="hidden" value="${product.id}"/>
@@ -224,7 +224,7 @@ function showList(req, res) {
                                     </div>
                                     <div class="col-12 mb-3">
                                         <span class="product-price">
-                                        ${product.price}$
+                                        ${product.price},000,000 VNĐ
                                         </span>
                                     </div>
                                     <input name="productId" type="hidden" value="${product.id}"/>

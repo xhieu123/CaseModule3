@@ -96,6 +96,28 @@ class ProductService {
         })
 
     }
+    priceIncrease() {
+        return new Promise((resolve, reject) => {
+            connection.getConnection().query('select * from products ORDER BY price ASC', (err, products) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(products)
+                }
+            })
+        })
+    }
+    priceReduced() {
+        return new Promise((resolve, reject) => {
+            connection.getConnection().query('select * from products ORDER BY price DESC', (err, products) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(products)
+                }
+            })
+        })
+    }
 }
 
 
